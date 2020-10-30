@@ -1,0 +1,60 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+<style type="text/css" media="screen">
+    img{
+        height: 25vh;
+    }
+    .outer{
+        margin-left: 6%;
+        margin-right: 6%;
+        width: 20%;
+        display: inline-block;
+    }
+    a:hover{
+    color:#4f068f;
+    text-decoration: none;
+}
+h4{
+    margin:  20% auto;
+    text-align: center;
+}
+    
+</style>
+{% if length == 0 %}
+<h4>No products available</h4>
+{% endif %}
+   
+  {% if objects is not None %}
+                     {% for object in objects %}
+        <div class = "outer">
+                <a href = "{% url 'listpage' object.id %}">
+                    <div>
+                     {% if object.product_url %}
+                    <center><img src = "{{ object.product_url }}">
+                    {% else %}
+                    <img src="https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-stock-vector-no-image-available-icon-flat-vector.jpg?ver=6">
+                                        {% endif %}
+                    </center>
+                </div>
+                <div>
+                    <h3>{{ object.product_name }}</h3>
+                    <h5>
+                        {{ object.product_description }}
+                        <br>
+                        <div>
+                        Price: ${{ object.product_price }}
+                        <br>
+                         Ad created:- {{ object.product_created }}
+                        </div>
+                    </h5>
+                    <br>
+
+                 </div> 
+        
+         </a>      
+  </div>
+                 {% endfor %}
+            {% endif %} 
+{% endblock %}

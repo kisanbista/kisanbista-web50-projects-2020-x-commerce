@@ -1,0 +1,191 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+<style type="text/css" media="screen">
+    img{
+        height: 40vh;
+    }
+    .outer{
+        margin-left: 6%;
+        margin-right: 6%;
+    }
+    input{
+        margin-top: 1%;
+        padding: 1%;
+    }
+              #comment{
+        clear: both;
+        width: 30%;
+        margin-left: auto;
+        margin-right: auto;
+        }
+        #comment_section{
+            padding: 0.5%;
+            margin-top: 2%;
+            width: 50%;
+             margin-left: auto;
+        margin-right: auto;
+
+        }
+    @media screen and (min-width: 961px){
+    .inner1{
+    	display: inline-block;
+    	width: 40%;
+    	float: left;
+    	}
+    	.inner2{
+    		display: inline-block;
+    		width: 30%;
+    	}
+  
+        button{
+            display: block;
+            width: 8%;
+            margin-left:auto;
+            margin-right: auto;
+        }
+    }
+    @media screen and (max-width: 960px){
+        img{
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .inner2{
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+            width: 50%;
+        }
+       textarea{
+        width: 100%;
+       }
+         button{
+            display: block;
+            width: auto;
+            margin-left:auto;
+            margin-right: auto;
+        }
+    }
+</style>
+    {% if alert %}
+    <script>
+    alert('Cannot bid price lesser than the actual price');
+    </script>
+{% endif %}
+{% if alert2 %}
+    <script>
+    alert('Bidding price lower than other bidder');
+    </script>
+{% endif %}
+ {% if added %}
+    <script>
+    alert('Added to Bidding List');
+    </script>
+{% endif %}
+ {% if already %}
+    <script>
+    alert('Already in the bidList');
+    </script>
+{% endif %}
+ {% if already1 %}
+    <script>
+    alert('Already in Watchlist');
+    </script>
+{% endif %}
+ {% if own %}
+    <script>
+    alert("Cannot place bid to your own item");
+    </script>
+
+{% endif %}
+ {% if own1 %}
+    <script>
+    alert("Cannot place your own item to watchlist");
+    </script>
+{% endif %}
+ {% if added1 %}
+    <script>
+    alert('Added to watchlist');
+    </script>
+{% endif %}
+
+    <div class = "outer">
+                    <div class="inner1">
+                     {% if object.product_url %}
+                    <img src = "{{ object.product_url }}">
+                    {% else %}
+                    <img src="https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-stock-vector-no-image-available-icon-flat-vector.jpg?ver=6">
+                                        {% endif %}
+
+                </div>
+                <div class="inner2">
+                    <h3>{{ object.product_name }}</h3>
+                    <h5>
+                        {{ object.product_description }}
+                        <br>
+                        <div>
+                        Price: ${{ object.product_price }}
+                        <br>
+                         Ad created:- {{ object.product_created }}
+                        </div>
+                    </h5>
+                    <br>
+
+                 </div> 
+                 {% if user.is_authenticated %}
+                 {% if not sold %}
+                 <div class = "inner2">
+                 	<a href = '{% url "watchlist" object.id %}'>Add to watchlist</a>
+                 </div> 
+                  <div class = "inner2">
+                 	<form action = '{% url "bidPrice" object.id %}' method = 'POST'>
+                 		{% csrf_token %}
+                 		<input type = "number" placeholder="Bid price" name = "bidPrice" required>
+                 		<input type="submit" value = "Bid">
+                 	</form>
+                 </div>    
+                 <div class="inner2">
+                 	{% if closing %}
+                 	<form action = "{% url 'closeBid' object.id %}" method="POST">
+                 		{% csrf_token %}
+                 		<input type="submit" value = "Close bid">
+              
+                 	</form>
+                 	{% endif %}
+                 </div> 
+                 {% endif %}
+                 {% endif %}
+                 <div class="inner2">
+                 	{% if sold %}
+             		<h4>Sold</h4>
+             		{% if winner %}
+             		<h4>Sold to:- {{ winner }} </h4>
+             		{% endif %}
+             		{% endif %}
+                 </div1>
+
+  </div>    
+
+  {% if not closing %}
+   <form action="{% url 'comments' object.id %}" method="POST">
+    {% csrf_token %}
+  <div id = "comment">
+    <h3>Comment</h3>
+   
+    <textarea placeholder="Comment here!!!" cols="50" rows="4" name="comment">      
+    </textarea>
+  </div>
+  <button type="submit">Comment</button>
+</form>
+{% endif %}
+  </div>
+  <h3 align="center" style="margin-top: 2%;">Comments</h3>
+  <div id = "comment_section" class="alert-danger">  
+    {% for comment in comments %}
+    <h5>User: {{ comment.user.username }} </h5>
+    <p>{{ comment.comment }}</p>
+    {% endfor %}
+  </div>
+
+        
+{% endblock %}

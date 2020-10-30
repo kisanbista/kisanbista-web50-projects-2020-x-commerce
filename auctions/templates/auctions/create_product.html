@@ -1,0 +1,21 @@
+{% extends 'auctions/layout.html' %}
+{% block body %}
+<style type="text/css" media="screen">
+form{
+	margin-top: 5%;
+	margin-left: 15%;
+
+}
+input{
+	border-radius: 8%;
+	color: red;
+}
+</style>
+<form method = "POST">
+    {% csrf_token %}
+    <strong>
+    {{ form.as_p }}
+</strong>
+    <input type = "submit" value = "create" />
+</form>
+{% endblock %}

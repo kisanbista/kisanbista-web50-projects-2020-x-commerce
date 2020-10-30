@@ -1,0 +1,102 @@
+{% extends "auctions/layout.html" %}
+{% block body %}
+
+<style type="text/css" media="screen">
+    img{
+        height: 40vh;
+    }
+    a:hover{
+        text-decoration: none;
+        color: #aa2b77;
+    }
+    h5{
+        text-align: justify;
+    }
+    h3{
+        text-align: center;
+        color: #8fabaf;
+    }
+
+    .outer{
+        margin-left: 6%;
+        margin-right: 6%;
+        }
+    input{
+        margin-top: 1%;
+        padding: 1%;
+    }
+       #no h2{
+            text-align: center;
+            color: #ba076a;
+            margin-top: 20%;
+        }
+    @media screen and (min-width: 961px){
+    .inner1{
+        display: inline-block;
+        width: 40%;
+
+        }
+        .inner2{
+            margin-top: 2%;
+            display: inline-block;
+            width: 30%;
+        }
+    }
+    @media screen and (max-width: 960px){
+        img{
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+        }
+        .inner2{
+            text-align: center;
+            margin: 0 auto;
+            display: block;
+            width: 50%;
+        }
+    }
+</style>
+<div id = "no">
+{% if length == 0 %}
+        <h2>No products in your Watchlist</h2>
+        {% endif %}
+    </div>
+    <div class = "outer">
+
+
+    	{% for object in objects %}
+	                    <div class="inner1">
+                            <a href="{% url 'listpage' object.product.id %}">
+	                    	{% if object.product.product_url %}
+	                    <center>	
+	                    <img src = "{{ object.product.product_url }}">
+	                    {% else %}
+	                    <img src="https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-stock-vector-no-image-available-icon-flat-vector.jpg?ver=6">
+	                                        </center>
+	                                        {% endif %}
+
+                </div>
+                <div class="inner2">
+                    <h3>{{ object.product.product_name }}</h3>
+                    <h5>
+                        {{ object.product.product_description }}
+                        <br>
+                        <div>
+                        Price: ${{ object.product.product_price }}
+                        <br>
+                         Ad created:- {{ object.product.product_created }}
+                        </div>
+                    </a>
+                    </h5>
+                    <br>
+                     <div>
+                 	<a href = '{% url "removeWatchlist" object.id %}'>Remove from watchlist</a>
+                 </div>   
+
+                 </div> 
+
+                {% endfor %}   
+
+  </div>
+        
+{% endblock %}

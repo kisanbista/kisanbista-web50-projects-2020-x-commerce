@@ -1,0 +1,80 @@
+{% extends "auctions/layout.html" %}
+
+
+{% block body %}
+<style type="text/css" media="screen">
+    img{
+        height: 25vh;
+    }
+       a:hover{
+    color:#4f068f;
+    text-decoration: none;
+}
+    @media screen and (min-width: 961px){
+    .outer{
+        margin-left: 6%;
+        margin-right: 6%;
+        width: 20%;
+        display: inline-block;
+    }
+  #no h2{
+            text-align: center;
+            color: #ba076a;
+            margin-top: 20%;
+        }
+    }
+      @media screen and (max-width: 960px){
+   div{
+    display: block;
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 2%;
+    text-align: justify;
+   }
+   h3{
+    text-align: center;
+   }
+   img{
+    margin-right: auto;
+    margin-left: auto;
+    display: block;   }
+    }
+
+
+</style>
+<div id = "no">
+{% if length == 0 %}
+        <h2>No products available</h2>
+        {% endif %}
+    </div>
+  {% if objects is not None %}
+                     {% for object in objects %}
+        <div class = "outer">
+                <a href = "{% url 'listpage' object.id %}">
+                    <div>
+                     {% if object.product_url %}
+                    <center><img src = "{{ object.product_url }}">
+                    {% else %}
+                    <img src="https://us.123rf.com/450wm/pavelstasevich/pavelstasevich1811/pavelstasevich181101065/112815953-stock-vector-no-image-available-icon-flat-vector.jpg?ver=6">
+                                        {% endif %}
+                    </center>
+                </div>
+                <div>
+                    <h3>{{ object.product_name }}</h3>
+                    <h5>
+                        {{ object.product_description }}
+                        <br>
+                        <div style="color:#ab6677;font-size: 2rem;">
+                        <b>Price: ${{ object.product_price }}</b>
+                        </div>
+                    </h5>
+                    <br>
+
+                 </div> 
+        
+         </a>      
+  </div>
+                 {% endfor %}
+            {% endif %} 
+{% endblock %}
